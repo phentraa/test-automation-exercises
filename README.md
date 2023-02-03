@@ -7,3 +7,9 @@ Kovács Péter - [LinkedIn](https://www.linkedin.com/in/p%C3%A9ter-kov%C3%A1cs-7
 ### Projects
 
 #### 1. KEAMK - [Random Team Generator](https://www.keamk.com/random-team-generator)
+
+Used packages:
+- selenium 4.8.0
+- webdriver_manager 3.8.5
+- pytest 7.2.0
+- allure-pytest 2.12.0
