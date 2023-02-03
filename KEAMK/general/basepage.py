@@ -16,3 +16,13 @@ class BasePage:
 
     def open(self):
         self.driver.get(self.__url)
+
+    def close(self, only_close=False):
+        """
+        Calls the driver's quit() method.
+        :param only_close: When True then calls the close() method
+        :return: None
+        """
+        if only_close:
+            self.driver.close()
+        self.driver.quit()
