@@ -1,4 +1,8 @@
 from selenium.webdriver import Chrome
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
+import time
 
 
 class BasePage:
@@ -26,3 +30,11 @@ class BasePage:
         if only_close:
             self.driver.close()
         self.driver.quit()
+
+    @property
+    def html(self) -> WebElement:
+        return self.driver.find_element(By.TAG_NAME, 'html')
+
+    def scroll_down(self):
+        self.html.send_keys(Keys.END)
+        time.sleep(1)  # Simulated scrolling is slower than code execution. We need to stop a little bit.

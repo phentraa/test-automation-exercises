@@ -45,7 +45,7 @@ class TestTeamGeneratorDefault:
             input_fields = self.page.teams.input_all
 
         for input_field in input_fields:
-            assert self.page.button_delete_of(input_field).is_displayed()
+            assert self.page.button_delete_for(input_field).is_displayed()
 
     def test_title_input_is_present(self):
         assert self.page.input_title.is_displayed()
@@ -60,8 +60,8 @@ class TestTeamGeneratorDefault:
         assert self.page.teams.button_add.is_displayed()
 
     def test_select_participant_is_present(self):
-        assert self.page.participants.select_count is not None
+        assert self.page.participants.select_number is not None
 
     def test_select_teams_is_present(self):
-        assert self.page.teams.select_count is not None
+        assert self.page.teams.select_number is not None
 
