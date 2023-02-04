@@ -31,18 +31,18 @@ class TestTeamGeneratorDefault:
     @pytest.mark.parametrize('field_group', ['participant', 'team'])
     def test_inputs_are_present(self, field_group: str, input_expected_data):
         if field_group == 'participant':
-            input_fields = self.page.input_all_participants
+            input_fields = self.page.participants.input_all
         else:
-            input_fields = self.page.input_all_teams
+            input_fields = self.page.teams.input_all
 
         assert len(input_fields) == input_expected_data[field_group]['number_of_fields']
 
     @pytest.mark.parametrize('field_group', ['participant', 'team'])
     def test_p_and_t_inputs_has_delete_button(self, field_group):
         if field_group == 'participant':
-            input_fields = self.page.input_all_participants
+            input_fields = self.page.participants.input_all
         else:
-            input_fields = self.page.input_all_teams
+            input_fields = self.page.teams.input_all
 
         for input_field in input_fields:
             assert self.page.button_delete_of(input_field).is_displayed()
@@ -54,14 +54,14 @@ class TestTeamGeneratorDefault:
         assert self.page.button_generate.is_displayed()
 
     def test_button_add_participant_is_present(self):
-        assert self.page.button_add_participant.is_displayed()
+        assert self.page.participants.button_add.is_displayed()
 
     def test_button_add_team_is_present(self):
-        assert self.page.button_add_team.is_displayed()
+        assert self.page.teams.button_add.is_displayed()
 
     def test_select_participant_is_present(self):
-        assert self.page.select_participants is not None
+        assert self.page.participants.select_count is not None
 
     def test_select_teams_is_present(self):
-        assert self.page.select_teams is not None
+        assert self.page.teams.select_count is not None
 
