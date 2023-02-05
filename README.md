@@ -14,3 +14,12 @@ Used packages:
 - webdriver_manager 3.8.5
 - pytest 7.2.0
 - allure-pytest 2.12.0
+
+Generating Allure report:
+```commandline
+python -m pytest --alluredir=.\KEAMK\allure-report
+```
+
+```commandline
+allure serve .\KEAMK\allure-report
+```

@@ -1,4 +1,4 @@
-import pytest
+import pytest, allure
 from KEAMK.pom.teamgenerator import TeamGeneratorPage
 from KEAMK.general.configuration import get_preconfigured_chrome_driver
 
@@ -43,12 +43,31 @@ class TestTeamGeneratorInteractions:
 
     # BEGINNING OF TEST METHODS ----------------------------------------------------------------------------------------
 
+    @allure.id('T201')
+    @allure.title('Submit form with empty title')
+    @allure.description("""
+        Submit the empty form with clicking on the Generate Teams button
+        Expected result: an error message appears because the Title field can not be empty.
+        """)
+    @allure.severity(allure.severity_level.MINOR)
     def test_submit_with_empty_title(self, error_messages):
         self.page.scroll_down()
         self.page.button_generate.click()
 
         assert self.page.error_field.text == error_messages['empty_title']
 
+    # ------------------------------------------------------------------------------------------------------------------
+
+    @allure.id('T202')
+    @allure.title('Submit form with Participants / Teams fields')
+    @allure.description("""
+            1. Fill out the Title input with valid data
+            2. Fill the first input of Participants or Teams section with valid data.
+            Leave the other section empty.
+            3. Submit the form with clicking on the Generate Teams button
+            Expected result: an error message appears in both cases when an input field had been left empty.
+            """)
+    @allure.severity(allure.severity_level.MINOR)
     @pytest.mark.parametrize('field_group', ['participant', 'team'])
     def test_submit_with_empty_section_inputs(self, field_group, error_messages):
 
@@ -63,17 +82,45 @@ class TestTeamGeneratorInteractions:
 
         assert self.page.error_field.text == error_messages['empty_field']
 
+    # ------------------------------------------------------------------------------------------------------------------
+
+    @allure.id('T203')
+    @allure.title('Check effects when select changes')
+    @allure.description("""
+                1. Change the select value of Participant section
+                2. Change the select value of Teams section
+
+                Expected result (in both cases):
+                - The number of input fields changes as the selected value indicates
+                - The indicator on the left of the Add new button shows the same value
+                as the selected value. 
+                """)
+    @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.parametrize('field_group', ['participant', 'team'])
     def test_total_follows_changes_of_select(self, field_group):
         test_number = '5'
 
         section = self.get_section(field_group)
-
         section.select_number.select_by_value(test_number)
 
         assert len(section.input_all) == int(test_number), 'Number of inputs should be equal with selected number'
         assert section.total.text == test_number, 'Number of inputs should be equal with the value of counter element'
 
+    # ------------------------------------------------------------------------------------------------------------------
+
+    @allure.id('T204')
+    @allure.title('Check effects when delete an input field')
+    @allure.description("""
+                   1. Delete the first input from the Participants section list
+                   2. Delete the first input from the Teams section list
+                   
+                   Expected result (in both cases):
+                   - The value of the number selector - related to the correct section - changes to the
+                   actual input field number
+                   - The value of the total number indicator left to the Add new button - related to the correct section - 
+                   changes to the actual input field number
+                   """)
+    @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.parametrize('field_group', ['participant', 'team'])
     def test_changes_are_followed_after_delete_an_input(self, field_group):
 
@@ -86,6 +133,21 @@ class TestTeamGeneratorInteractions:
         selected_value = section.select_number.first_selected_option
         assert int(selected_value.text) == actual_input_number, 'The active option of select should be equal with the total of inputs'
 
+    # ------------------------------------------------------------------------------------------------------------------
+
+    @allure.id('T205')
+    @allure.title('Check effects when add a new input field')
+    @allure.description("""
+                       1. Click on the Add Participant button
+                       2. Click on the Add Team button
+
+                       Expected result (in both cases):
+                       - The value of the number selector - related to the correct section - changes to the
+                       actual input field number
+                       - The value of the total number indicator left to the Add new button - related to the correct section - 
+                       changes to the actual input field number.
+                       """)
+    @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.parametrize('field_group', ['participant', 'team'])
     def test_changes_are_followed_after_add_new_input(self, field_group):
         section = self.get_section(field_group)
