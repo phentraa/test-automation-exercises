@@ -64,7 +64,7 @@ class TestTeamGeneratorInteractions:
         assert self.page.error_field.text == error_messages['empty_field']
 
     @pytest.mark.parametrize('field_group', ['participant', 'team'])
-    def test_total_follow_changes_on_select(self, field_group):
+    def test_total_follows_changes_of_select(self, field_group):
         test_number = '5'
 
         section = self.get_section(field_group)
@@ -85,3 +85,16 @@ class TestTeamGeneratorInteractions:
 
         selected_value = section.select_number.first_selected_option
         assert int(selected_value.text) == actual_input_number, 'The active option of select should be equal with the total of inputs'
+
+    @pytest.mark.parametrize('field_group', ['participant', 'team'])
+    def test_changes_are_followed_after_add_new_input(self, field_group):
+        section = self.get_section(field_group)
+        input_total = len(section.input_all)
+
+        self.page.scroll_down()
+        section.button_add.click()
+        new_input_total = len(section.input_all)
+        assert new_input_total == input_total + 1
+        assert int(section.total.text) == new_input_total
+        assert int(section.select_number.first_selected_option.text) == new_input_total
+
